@@ -15,6 +15,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
 
     private List<Item> itemList;
 
+    public  ItemClickListener clickListener;
+
+    public void setClickListener(ItemClickListener myListener){
+        this.clickListener = myListener;
+    }
+
     public MyAdapter(List<Item> itemList) {
         this.itemList = itemList;
     }
@@ -26,6 +32,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
         View itemView = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.item_layout,parent,false);
+
+
 
 
         return new MyViewHolder(itemView);
@@ -48,7 +56,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
     }
 
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         ImageView imageView;
         TextView title;
@@ -60,6 +68,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
             title = itemView.findViewById(R.id.title_text);
             desciption = itemView.findViewById(R.id.description_text);
 
+            itemView.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            if(clickListener != null){
+                clickListener.onClick(v,getAdapterPosition());
+            }
         }
     }
 }
